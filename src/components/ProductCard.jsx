@@ -1,23 +1,32 @@
-function ProductCard({product}){
+// src/components/ProductCard.jsx
+import React from 'react';
+import '../styles/ProductCard.css';
 
-return(
+function ProductCard({ product, onAddToCart }) {
+  return (
+    <div className="product-card">
+      <div className="product-image-container">
+        <img src={product.image} alt={product.name} className="product-image" />
+      </div>
 
-<div>
+      <div className="product-info">
+        <h3 className="product-name">{product.name}</h3>
+        <p className="product-description">{product.description}</p>
+        <div className="product-footer">
+          <span className="product-price">${product.price}</span>
+          <span className="product-category">{product.category}</span>
+        </div>
 
-<img src={product.image} alt={product.name} width="200"/>
-
-<h3>{product.name}</h3>
-
-<p>{product.description}</p>
-
-<p>${product.price}</p>
-
-<p>{product.category}</p>
-
-</div>
-
-);
-
+        {/* Add to Cart Button */}
+        <button
+          className="add-to-cart-btn"
+          onClick={() => onAddToCart(product)}
+        >
+          Add to Cart
+        </button>
+      </div>
+    </div>
+  );
 }
 
 export default ProductCard;

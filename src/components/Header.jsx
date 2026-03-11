@@ -1,8 +1,27 @@
-function Header() {
+// src/components/Header.jsx
+import React from 'react';
+import '../styles/Header.css';
+
+function Header({ cartItemCount, onCartClick }) {
   return (
-    <header>
-      <h1>🛒 QuickCart</h1>
-      <p>Your one stop shop</p>
+    <header className="header">
+      <div className="header-container">
+        <div className="header-content">
+          {/* Logo / Title */}
+          <div className="header-text">
+            <h1 className="header-title">🛒 QuickCart</h1>
+            <p className="header-subtitle">Your one-stop shop for everything</p>
+          </div>
+
+          {/* Cart Button */}
+          <button className="cart-icon-btn" onClick={onCartClick}>
+            🛒
+            {cartItemCount > 0 && (
+              <span className="cart-badge">{cartItemCount}</span>
+            )}
+          </button>
+        </div>
+      </div>
     </header>
   );
 }
