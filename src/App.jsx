@@ -1,83 +1,37 @@
-// src/App.jsx
-import { useState } from 'react';
-import Header from './components/Header';
-import ProductList from './components/ProductList';
-import CartSidebar from './components/CartSidebar';
-import { products } from './data/products';
-import './styles/App.css';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useState } from "react";
+
+import Header from "./components/Header";
+import HomePage from "./components/HomePage";
+import CategoryPage from "./components/CategoryPage";
+import CartPage from "./components/CartPage";
+import CartSidebar from "./components/CartSidebar";
+
+import { products } from "./data/products";
 
 function App() {
-  // Cart state
-  const [cart, setCart] = useState([]);
-  const [isCartOpen, setIsCartOpen] = useState(false);
-
-  // Add product to cart
-  const addToCart = (product) => {
-    const existingItem = cart.find(item => item.id === product.id);
-    if (existingItem) {
-      setCart(
-        cart.map(item =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-        )
-      );
-    } else {
-      setCart([...cart, { ...product, quantity: 1 }]);
-    }
-  };
-
-  // Remove product from cart
-  const removeFromCart = (productId) => {
-    setCart(cart.filter(item => item.id !== productId));
-  };
-
-  // Update quantity
-  const updateQuantity = (productId, newQuantity) => {
-    if (newQuantity <= 0) {
-      removeFromCart(productId);
-    } else {
-      setCart(
-        cart.map(item =>
-          item.id === productId ? { ...item, quantity: newQuantity } : item
-        )
-      );
-    }
-  };
-
-  // Toggle cart sidebar
-  const toggleCart = () => {
-    setIsCartOpen(!isCartOpen);
-  };
-
-  // Total number of items in cart
-  const getTotalItems = () => {
-    return cart.reduce((total, item) => total + item.quantity, 0);
-  };
+  const [searchTerm, setSearchTerm] = useState("");
 
   return (
-    <div className="app">
-      {/* Header with cart count */}
-      <Header 
-        cartItemCount={getTotalItems()} 
-        onCartClick={toggleCart}
-      />
+    <BrowserRouter>
+      <Header searchTerm={searchTerm} onSearchChange={setSearchTerm} />
 
-      {/* Product list */}
-      <main className="main-content">
-        <ProductList 
-          products={products} 
-          onAddToCart={addToCart} 
+      <Routes>
+        <Route
+          path="/"
+          element={<HomePage products={products} searchTerm={searchTerm} />}
         />
-      </main>
 
-      {/* Cart sidebar */}
-      <CartSidebar
-        isOpen={isCartOpen}
-        onClose={toggleCart}
-        cart={cart}
-        onUpdateQuantity={updateQuantity}
-        onRemoveItem={removeFromCart}
-      />
-    </div>
+        <Route
+          path="/category/:category"
+          element={<CategoryPage products={products} />}
+        />
+
+        <Route path="/cart" element={<CartPage />} />
+      </Routes>
+
+      <CartSidebar />
+    </BrowserRouter>
   );
 }
 

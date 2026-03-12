@@ -1,18 +1,21 @@
+import React from "react";
 import { useCart } from "../context/CartContext";
 
-function CartSidebar() {
-  const { cart = [], removeFromCart } = useCart() || {};
+function CartPage() {
+  const { cart, removeFromCart } = useCart();
 
   return (
     <div>
-      <h2>Cart</h2>
+      <h1>Shopping Cart</h1>
 
       {cart.length === 0 ? (
-        <p>No items in cart</p>
+        <p>Your cart is empty</p>
       ) : (
         cart.map((item) => (
           <div key={item.id}>
-            <p>{item.name}</p>
+            <h3>{item.name}</h3>
+            <p>${item.price}</p>
+
             <button onClick={() => removeFromCart(item.id)}>
               Remove
             </button>
@@ -23,4 +26,4 @@ function CartSidebar() {
   );
 }
 
-export default CartSidebar;
+export default CartPage;
